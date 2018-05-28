@@ -50,8 +50,8 @@ public class Router {
         return retval;
     }
 
-    private static void sendResponse(String response, HttpExchange exchange, int code, String contenttype) throws IOException {
-        exchange.getResponseHeaders().add("Content-Type",contenttype);
+    private static void sendResponse(String response, HttpExchange exchange, int code, String contentType) throws IOException {
+        exchange.getResponseHeaders().add("Content-Type",contentType);
         exchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream responseStream = exchange.getResponseBody();
         responseStream.write(response.getBytes());
@@ -92,6 +92,11 @@ public class Router {
     @WebRoute(path="/something")
     public static void something(HttpExchange exchange) throws IOException {
         sendResponse("Something returned", exchange);
+    }
+
+    @WebRoute(path="/parametrized/<parameterName>")
+    public static void paremtrizedRoute(HttpExchange exchange, String parameterName) throws IOException {
+        sendResponse("Something parametrized:"+sanitizeInputString(parameterName), exchange);
     }
 
 }
